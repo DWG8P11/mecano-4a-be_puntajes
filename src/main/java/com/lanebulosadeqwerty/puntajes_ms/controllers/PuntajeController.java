@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+
+import javax.validation.Valid;
+
 import java.util.ArrayList;
 
 import com.lanebulosadeqwerty.puntajes_ms.exceptions.PuntajeNoEncontradoException;
@@ -57,7 +60,7 @@ public class PuntajeController {
 
 
     @PostMapping("/aprendizaje/puntajes")
-    Puntaje nuevoPuntaje(@RequestBody Puntaje puntaje) {
+    Puntaje nuevoPuntaje(@Valid @RequestBody Puntaje puntaje) {
         // Error: Puntuacion invalida
         if (puntaje.getCpm_e() < 0 || puntaje.getPrecision() < 0 || puntaje.getPrecision() > 1 || puntaje.getSegundos() < 0) {
             throw new PuntuacionInvalidaException("Los puntajes reportados no se encuentran dentro del rango válido.");

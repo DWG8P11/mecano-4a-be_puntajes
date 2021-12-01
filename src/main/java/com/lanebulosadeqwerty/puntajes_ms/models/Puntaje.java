@@ -6,19 +6,24 @@ import org.springframework.data.annotation.Id;
 import java.util.Date;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity // Le indicamos a la clase que es una entidad, para administrarla y realizar las relaciones 
 @Table(name="puntaje") // Nombrar tabla de la bd
 public class Puntaje {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private String id;
+    @NotNull 
     private String usuario; // Nombre de usuario
+    @NotNull (message = "leccionId no puede ser nulo")
     private String leccionId;
+    @NotNull (message = "precision no puede ser nula")
     private double precision;
+    @NotNull (message = "cpm_e no puede ser nulo")
     private Integer cpm_e;
+    @NotNull (message = "El número de segundos no puede ser nulo.")
     private Double segundos;
     private Date fecha;
     
-
     public Puntaje(String usuario, double precision, Integer cpm_e, Double segundos, Date fecha, String leccionId) {
         this.precision = precision;
         this.usuario = usuario;
