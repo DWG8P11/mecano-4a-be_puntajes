@@ -25,6 +25,7 @@ import com.lanebulosadeqwerty.puntajes_ms.repositories.PuntajeRepository;
 @RestController
 public class PuntajeController {
     private final PuntajeRepository puntajesRepositorio;
+    private final String id_temporal = "id_temporal";
 
     public PuntajeController(PuntajeRepository puntajesRepositorio) {
         this.puntajesRepositorio = puntajesRepositorio;
@@ -63,12 +64,12 @@ public class PuntajeController {
     }
 
 
-    @PostMapping("/aprendizaje/puntajes")
+    @PostMapping("/aprende/puntajes")
     Puntaje crearPuntaje(@Valid @RequestBody Puntaje puntaje) {
         // Error: Si se esta tratando de sobreescribir un puntaje existente.
         Puntaje puntajeIgual = puntajesRepositorio.findById(puntaje.getId()).orElse(null);
 
-        if (puntajeIgual != null && !puntajeIgual.equals(puntaje.getId())) {
+        if (puntajeIgual != null && !puntaje.getId().equals(id_temporal)) {
             throw new PuntajeYaExisteException("No es posible actualizar un puntaje si un puntaje con el mismo id ya existe.");
         }
 
@@ -76,7 +77,7 @@ public class PuntajeController {
         if (puntaje.getCpm_e() < 0 || puntaje.getPrecision() < 0 || puntaje.getPrecision() > 1 || puntaje.getSegundos() < 0) {
             throw new PuntuacionInvalidaException("Los puntajes reportados no se encuentran dentro del rango válido.");
         }
-
+        puntaje.setId(null);
         return puntajesRepositorio.save(puntaje);
     }
 
@@ -92,7 +93,7 @@ public class PuntajeController {
         // Error: Si se esta tratando de sobreescribir un puntaje existente.
         Puntaje puntajeIgual = puntajesRepositorio.findById(puntajeNuevo.getId()).orElse(null);
 
-        if (puntajeIgual != null && !idViejo.equals(puntajeNuevo.getId())) {
+        if (puntajeIgual != null && !idViejo.equals(puntajeNuevo.getId()) && !puntajeNuevo.getId().equals(id_temporal)) {
             System.out.println(idViejo);
             System.out.println(puntajeNuevo.getId());
             throw new PuntajeYaExisteException("No es posible actualizar un puntaje si un puntaje con el mismo id ya existe.");
@@ -148,7 +149,7 @@ public class PuntajeController {
 
         // Borrar todos los puntajes del usuario indicado que están en la lección indicada
         for (Puntaje puntajeUsuario : puntajesRepositorio.findAllByUsuario(usuario)) {
-            if (puntajeUsuario.getLeccionId() != null && puntajeUsuario.getLeccionId().equals(idLeccion)) {
+            if (puntajeUsuario.getLeccionId() != null && puntajeUsuario.getUsuario().equals(usuario)) {
                 puntajesBorrados.add(puntajeUsuario.getId());
                 puntajesRepositorio.delete(puntajeUsuario);
             }

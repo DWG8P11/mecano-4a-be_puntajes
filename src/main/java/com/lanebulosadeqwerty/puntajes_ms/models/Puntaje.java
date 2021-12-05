@@ -1,6 +1,7 @@
 package com.lanebulosadeqwerty.puntajes_ms.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 // import java.sql.Double;
 import java.util.Date;
@@ -9,9 +10,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity // Le indicamos a la clase que es una entidad, para administrarla y realizar las relaciones 
-@Table(name="puntaje") // Nombrar tabla de la bd
+@Document(collection = "puntaje") // Nombrar tabla de la bd
 public class Puntaje {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private String id;
+    @Id
+    private String id;
     @NotNull 
     private String usuario; // Nombre de usuario
     @NotNull (message = "leccionId no puede ser nulo")
@@ -24,7 +26,12 @@ public class Puntaje {
     private Double segundos;
     private Date fecha;
     
-    public Puntaje(String usuario, double precision, Integer cpm_e, Double segundos, Date fecha, String leccionId) {
+    public Puntaje(String id, String usuario, double precision, Integer cpm_e, Double segundos, Date fecha, String leccionId) {
+        if (id != null) {
+            this.id = id;
+        } else {
+            this.id = "id_temporal";
+        }  
         this.precision = precision;
         this.usuario = usuario;
         this.cpm_e = cpm_e;
