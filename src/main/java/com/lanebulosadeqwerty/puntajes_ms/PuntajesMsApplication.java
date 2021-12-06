@@ -16,7 +16,7 @@ public class PuntajesMsApplication {
 	@GetMapping("/")
 	public String darMensajeBienvenida() {
 		return """
-		<h1>La Nebulosa de Qwerty - Microservicio de Niveles</h1> <br/>
+		<h1>La Nebulosa de Qwerty - Microservicio de Puntajes</h1> <br/>
 		Hola! Estás en el backend del Microservicio de Puntajes de la aplicación La Nebulosa de Qwerty.
 		""";
 	}
