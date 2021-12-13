@@ -51,4 +51,44 @@ Maven:
 
 # API
 
+## Puntajes
+- `/aprende/puntajes`
+  - GET: traer todos los puntajes en las lecciones. Con los parametros de petición `usuario` y/o `nLeccion` se puede filtrar la búsqueda.
+  - POST: crea un nuevo puntaje.
+  - DELETE: elimina los puntajes identificados por los parámetros `usuario` y/o `nLeccion`; al menos uno de los filtros es necesario.
+- `/aprende/puntajes/<id:String>
+  - GET: trae el puntaje identificado por el id indicado.
+  - DELETE: elimina el puntaje indicado.
+  - 
+- `/aprende/puntajes/numeros`
+  - GET: dado el parametro de peticion `usuario`, retorna los puntajes del usuario indicado. Se puede filtrar la búsqueda con los parámetros de petición `nivel` y/o `nLeccion`.
+  - 
+
+### Tipos de datos
+
+```
+PuntajeIn {
+        usuario     : String!
+        precision   : Float!
+        cpme        : Int!
+        segundos    : Int!
+        fecha       : String
+        id_leccion  : String!
+    }
+```
+````
+PuntajeOut {
+        id          : String!
+        usuario     : String!
+        precision   : Float!
+        cpme        : Int!
+        segundos    : Int!
+        fecha       : String
+        id_leccion  : String!
+    }
+````
+
+
+
+
  
